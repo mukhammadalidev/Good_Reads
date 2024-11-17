@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-2">
+    {% if books %}
+
+    <h3>Books</h3>
+    <div class="row mb-4">
+        <div class="col-4">
+            <form method="get" class="d-flex">
+                <input class="form-control me-4" type="text" placeholder="Search" name="q" value="{{search_query}}">
+                <button class="btn btn-success">search</button>
+            </form>
+        </div>
+    </div>
+    {% for book in books %}
+<div class="row mb-5">
+    <div class="col-12 col-md-2">
+        <img width="200" height="300" src="{{book.cover_picture.url}}" alt="cover">
+    </div>
+    <div class="col-12 col-md-8">
+            <a href="{% url 'book:detail' book.id %}">{{book.title}}</a>
+            <p>
+                {{book.description}}
+            </p>
+    </div>
+</div>
+
+    {% endfor %}
+
+    <nav aria-label="Page navigation example">
+  <ul class="pagination">
+          {% if books.has_previous %}
+ <li class="page-item"> <a class="page-link" href="{% url 'book:list' %}?page={{books.previous_page_number}}">previous</a></li>
+    {%endif%}
+
+    <li class="page-item"><a class="page-link" href="#"> {{books.number}}</a></li>
+    <li class="page-item">
+            {% if books.has_next %}
+    <a class="page-link" href="{% url 'book:list' %}?page={{books.next_page_number}}">next</a>
+    {%endif%}
+    </li>
+  </ul>
+</nav>
+
+
+
+
+{% else %}
+    No books found.
+{% endif %}
+    </div>
+{% endblock content %}

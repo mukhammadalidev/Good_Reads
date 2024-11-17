@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-2">
+            <img width="200" height="300" src="{{book.cover_picture.url}}" alt="cover image">
+        </div>
+        <div class="col-8">
+            <div>
+    <h2>{{book.title}}   </h2>
+<span class="fst-italic">
+                Authored by
+                {% for book_author in book.bookauthor_set.all %}
+                    {% if forloop.last %}
+                        {{ book_author.author.full_name }}
+                    {% else %}
+                        {{ book_author.author.full_name }},
+                    {% endif %}
+                {% endfor %}
+            </span>
+
+
+
+<p>{{book.description}}</p>
+<p>isbn:{{book.isbn}}</p>
+</div>
+        </div>
+    </div>
+
+        <div class="row">
+        <div class="col-4">
+            <form action="{% url 'book:review' book.id %}" method="post">
+                {% csrf_token %}
+                {{review|crispy}}
+
+                <button class="btn btn-success">Add Review</button>
+            </form>
+        </div>
+    </div>
+
+    {% if book.reviews.exists %}
+   <div class="mt-3 mb-3">
+        <h1>Reviews</h1>
+    <hr>
+   </div>
+
+    {% for review in book.reviews.all %}
+    <div class="row mb-3">
+        <div class="col-1 me-2">
+            <img width="100" style="border-radius: 50%" height="100" src="{{review.user.profile_picture.url}}" alt="">
+
+        </div>
+         <div class="col-7">
+           <h4>  <b> {{review.user.username}}</b> rate it
+
+             {{review.stars_given}}
+
+             <span class="fw-lighter">
+                 {{review.created_time}}
+             </span>
+               {% if review.user == request.user %}
+           <a href="{% url 'book:edit_review' book.id review.id %}"><i class="bi bi-pen"></i></a>
+              <a href="{% url 'book:confirm-delete-review' book.id review.id %}"><i class="bi bi-trash"></i></a>
+               {% endif %}
+           </h4>
+            <p class="mt-2 font-monospace">
+                {{review.comment}}
+            </p>
+         </div>
+    </div>
+    {% endfor %}
+    {% endif  %}
+</div>
+{% endblock content %}
+

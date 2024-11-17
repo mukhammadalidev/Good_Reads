@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{%endblock title%}
+{% block content %}
+<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+    <div class="card w-50 p-4"> <div class=" image d-flex flex-column justify-content-center align-items-center">
+        <button class="btn btn-secondary"> <img src="{{user.profile_picture.url}}" height="200" width="200" />
+        </button> <span class="name mt-3">{{user.first_name}} {{user.last_name}}</span> <span class="idd">@{{user.username}}</span>
+  <div class=" d-flex mt-2">email:{{user.email}}</div>
+        <div class=" d-flex mt-2"><a class="btn btn-dark" href="{% url 'users:profile-edit' %}">Profile Edit</a> </div>
+        </div> <div class="text-center px-2 rounded mt-4 date "> <span class="join">Joined {{user.date_joined|date:"M d, Y"}}</span> </div>
+    </div> </div>
+</div>
+<!--<h1>Profile</h1>-->
+<!--<img width="200" height="200" class="rounded-circle" src="{{user.profile_picture.url}}" alt="profile_picture">-->
+<!--<p><a href="{% url 'users:profile-edit' %}">Profile Edit</a></p>-->
+<!--<p>username:{{user.username}}</p>-->
+<!--<p>first name:{{user.first_name}}</p>-->
+<!--<p>last name:{{user.last_name}}</p>-->
+<!--<p>email:{{user.email}}</p>-->
+
+{% endblock content %}
